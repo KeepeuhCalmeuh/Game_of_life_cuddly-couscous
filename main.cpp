@@ -225,25 +225,19 @@ int main() {
 
     // Initial display of simulation state in the window title
     update_window_title(window);
-    bool lastRunning = !running; // Local variable for state tracking
-    double lastSpeed = simulationSpeed;
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         renderer.draw(game, camera);
-        if (running) game.update();
-        // Draw overlay text (speed and state)
+        if (running) {
+            game.update();
+        }
+        // Draw overlay text (speed, state, generation)
         char overlay[128];
-        snprintf(overlay, sizeof(overlay), "Speed: %.3fs | %s", simulationSpeed, running ? "Running" : "Paused");
+        snprintf(overlay, sizeof(overlay), "Speed: %.3fs | %s | Generation: %d", simulationSpeed, running ? "Running" : "Paused", game.getGeneration());
         draw_overlay_text(10, 20, overlay);
         glfwSwapBuffers(window);
         glfwPollEvents();
         glfwWaitEventsTimeout(simulationSpeed);
-        // Update the title if state or speed changes
-        if (lastRunning != running || lastSpeed != simulationSpeed) {
-            update_window_title(window);
-            lastRunning = running;
-            lastSpeed = simulationSpeed;
-        }
     }
 
     glfwDestroyWindow(window);

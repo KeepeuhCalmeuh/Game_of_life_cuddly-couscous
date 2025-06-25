@@ -17,6 +17,9 @@ public:
     void setCell(int x, int y, bool alive);
     void clear();
     const std::unordered_set<std::pair<int, int>, CellHash>& getCells() const;
+    int getGeneration() const { return generation; }
+    void resetGeneration() { generation = 0; }
 private:
     std::unordered_set<std::pair<int, int>, CellHash> aliveCells;
+    int generation = 0;
 };

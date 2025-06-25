@@ -31,6 +31,7 @@ void GameOfLife::update() {
             next.insert(cell);
     }
     aliveCells.swap(next);
+    generation++; // Incrémente le compteur de génération
 }
 
 bool GameOfLife::isAlive(int x, int y) const {
@@ -46,6 +47,7 @@ void GameOfLife::setCell(int x, int y, bool alive) {
 
 void GameOfLife::clear() {
     aliveCells.clear();
+    generation = 0; // Remet à zéro le compteur de génération
 }
 
 const std::unordered_set<std::pair<int, int>, CellHash>& GameOfLife::getCells() const {
