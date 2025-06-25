@@ -15,6 +15,7 @@ const int GRID_HEIGHT = WINDOW_HEIGHT / CELL_SIZE;
 Camera camera(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 1.0f);
 bool dragging = false;
 double lastX = 0, lastY = 0;
+bool rightClickPainting = false;
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     double xpos, ypos;
@@ -26,14 +27,18 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         glfwGetCursorPos(window, &lastX, &lastY);
         return;
     }
-    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && !dragging && gamePtr) {
-        float zoom = camera.getZoom();
-        float offsetX = camera.getX();
-        float offsetY = camera.getY();
-        // Correction du calcul pour éviter la symétrie axiale
-        int cellX = static_cast<int>(std::floor((xpos - WINDOW_WIDTH / 2.0) / zoom + offsetX) / CELL_SIZE);
-        int cellY = static_cast<int>(std::floor((WINDOW_HEIGHT / 2.0 - ypos) / zoom + offsetY) / CELL_SIZE);
-        gamePtr->setCell(cellX, cellY, true);
+    if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+        if (action == GLFW_PRESS && !dragging && gamePtr) {
+            rightClickPainting = true;
+            float zoom = camera.getZoom();
+            float offsetX = camera.getX();
+            float offsetY = camera.getY();
+            int cellX = static_cast<int>(std::floor((xpos - WINDOW_WIDTH / 2.0) / zoom + offsetX) / CELL_SIZE);
+            int cellY = static_cast<int>(std::floor((WINDOW_HEIGHT / 2.0 - ypos) / zoom + offsetY) / CELL_SIZE);
+            gamePtr->setCell(cellX, cellY, true);
+        } else if (action == GLFW_RELEASE) {
+            rightClickPainting = false;
+        }
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         dragging = false;
@@ -47,6 +52,17 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
         camera.move(-dx, dy); // Inversion du déplacement vertical
         lastX = xpos;
         lastY = ypos;
+    }
+    if (rightClickPainting) {
+        GameOfLife* gamePtr = static_cast<GameOfLife*>(glfwGetWindowUserPointer(window));
+        if (gamePtr) {
+            float zoom = camera.getZoom();
+            float offsetX = camera.getX();
+            float offsetY = camera.getY();
+            int cellX = static_cast<int>(std::floor((xpos - WINDOW_WIDTH / 2.0) / zoom + offsetX) / CELL_SIZE);
+            int cellY = static_cast<int>(std::floor((WINDOW_HEIGHT / 2.0 - ypos) / zoom + offsetY) / CELL_SIZE);
+            gamePtr->setCell(cellX, cellY, true);
+        }
     }
 }
 
@@ -93,6 +109,9 @@ int main() {
     glfwSetKeyCallback(window, key_callback);
     glfwSetWindowUserPointer(window, &game);
 
+    // Affichage initial de l'état de la simulation dans le titre
+    glfwSetWindowTitle(window, running ? "Jeu de la vie - simulation : on" : "Jeu de la vie - simulation : off");
+
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         renderer.draw(game, camera);
@@ -100,6 +119,13 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
         glfwWaitEventsTimeout(0.05);
+
+        // Met à jour le titre si l'état change
+        static bool lastRunning = !running;
+        if (lastRunning != running) {
+            glfwSetWindowTitle(window, running ? "Jeu de la vie - simulation : on" : "Jeu de la vie - simulation : off");
+            lastRunning = running;
+        }
     }
 
     glfwDestroyWindow(window);

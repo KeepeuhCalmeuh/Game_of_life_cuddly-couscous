@@ -24,7 +24,7 @@ Open a terminal in the project folder and run:
 ```sh
 mkdir build
 cd build
-cmake ..
+cmake .. 
 cmake --build .
 ```
 
@@ -37,12 +37,19 @@ From the `build` folder:
 ./GLFW_Interface
 ```
 
+## Quick start
+
+### Windows
+- Double-click `launch.bat` or run it in a terminal to build and launch the project.
+
+### Linux
+- Run `bash launch.sh` in the project folder to build and launch the project.
+
 ## Cross-platform compatibility
 
-- The project is tested and works on both **Windows** and **Linux**.
-- On Linux, make sure you have OpenGL development libraries installed (e.g. `sudo apt install libgl1-mesa-dev xorg-dev`).
-- The CMake configuration will automatically link the correct OpenGL library for your platform.
-- All dependencies are handled by CMake FetchContent.
+- The project is tested and works on **Windows**
+- I still didn't test it on Linux, but it should work.
+
 
 ## Project structure
 
