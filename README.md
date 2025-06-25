@@ -13,6 +13,20 @@ This project is a C++ implementation of Conway's Game of Life with a modern inte
   - **Space bar** to start/stop the simulation.
   - **Backspace** to clear all living cells instantly.
 - **Black grid on white background** for clear visibility.
+- **Speed control**:
+  - Use `+`/`-` (or `=`/`-`) keys on the keyboard or numeric keypad to increase/decrease simulation speed.
+  - The current speed and simulation state are now displayed as an overlay inside the window (with a white rectangle for readability).
+- **Fullscreen**:
+  - `F11` key to toggle fullscreen/windowed mode.
+- **Pattern insertion**:
+  - Press numeric keypad keys (`Numpad 1` to `Numpad 5`) to insert classic patterns at the mouse position:
+    - `Numpad 1`: Glider
+    - `Numpad 2`: Blinker
+    - `Numpad 3`: Toad
+    - `Numpad 4`: Beacon
+    - `Numpad 5`: Pulsar
+- **On-screen overlay**:
+  - Simulation speed and state (Running/Paused) are always visible in the top-left corner, with a white background for readability.
 
 ## Requirements
 - CMake
@@ -51,20 +65,41 @@ From the `build` folder:
 - The project is tested and works on **Windows**
 - I still didn't test it on Linux, but it should work.
 
-
 ## Project structure
 
 - `main.cpp`: entry point, main loop, user interaction
 - `GameOfLife.hpp` / `GameOfLife.cpp`: infinite grid logic
 - `Renderer.hpp` / `Renderer.cpp`: grid and cell rendering
 - `Camera.hpp` / `Camera.cpp`: camera/viewport logic (pan & zoom)
+- `Patterns.hpp`: classic patterns (glider, blinker, etc.)
+- `stb_easy_font.h`: simple text rendering for overlays
 - `CMakeLists.txt`: CMake configuration (uses FetchContent for GLFW)
 
 ## Customization
 
 - Change window or cell size in `main.cpp`.
 - Improve logic or rendering as you wish.
+- Add your own patterns in `Patterns.hpp`.
 
 ## License
 
 This project is licensed under the [MIT License](./LICENSE) — free for personal or educational use.
+
+## Controls summary
+
+| Action                | Key / Mouse            |
+|-----------------------|------------------------|
+| Pause/Play            | Space                  |
+| Speed + / -           | + / - (or = / -)       |
+| Fullscreen            | F11                    |
+| Clear grid            | Backspace              |
+| Drag & drop           | Left click             |
+| Paint cell            | Right click            |
+| Zoom                  | Mouse wheel            |
+| Insert Glider         | Numpad 1               |
+| Insert Blinker        | Numpad 2               |
+| Insert Toad           | Numpad 3               |
+| Insert Beacon         | Numpad 4               |
+| Insert Pulsar         | Numpad 5               |
+
+Feel free to enrich `Patterns.hpp` with your own patterns!
