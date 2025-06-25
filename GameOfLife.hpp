@@ -15,6 +15,7 @@ public:
     void update();
     bool isAlive(int x, int y) const;
     void setCell(int x, int y, bool alive);
+    void clear();
     const std::unordered_set<std::pair<int, int>, CellHash>& getCells() const;
 private:
     std::unordered_set<std::pair<int, int>, CellHash> aliveCells;

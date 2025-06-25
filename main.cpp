@@ -104,6 +104,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
         toggle_fullscreen(window);
     }
+    if (key == GLFW_KEY_BACKSPACE && action == GLFW_PRESS) {
+        game.clear();
+    }
 }
 
 int main() {

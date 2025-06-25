@@ -11,6 +11,7 @@ This project is a C++ implementation of Conway's Game of Life with a modern inte
   - **Right click** to make a cell alive at the cursor position.
 - **Simulation control**:
   - **Space bar** to start/stop the simulation.
+  - **Backspace** to clear all living cells instantly.
 - **Black grid on white background** for clear visibility.
 
 ## Requirements

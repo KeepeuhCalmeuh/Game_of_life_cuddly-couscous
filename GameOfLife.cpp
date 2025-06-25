@@ -44,6 +44,10 @@ void GameOfLife::setCell(int x, int y, bool alive) {
         aliveCells.erase({x, y});
 }
 
+void GameOfLife::clear() {
+    aliveCells.clear();
+}
+
 const std::unordered_set<std::pair<int, int>, CellHash>& GameOfLife::getCells() const {
     return aliveCells;
 }
