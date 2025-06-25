@@ -16,6 +16,21 @@ Camera camera(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 1.0f);
 bool dragging = false;
 double lastX = 0, lastY = 0;
 bool rightClickPainting = false;
+bool fullscreen = false;
+GLFWwindow* window = nullptr;
+
+void toggle_fullscreen(GLFWwindow*& window) {
+    fullscreen = !fullscreen;
+    GLFWmonitor* monitor = fullscreen ? glfwGetPrimaryMonitor() : nullptr;
+    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    int width = fullscreen ? mode->width : WINDOW_WIDTH;
+    int height = fullscreen ? mode->height : WINDOW_HEIGHT;
+    int xpos = fullscreen ? 0 : 100;
+    int ypos = fullscreen ? 0 : 100;
+    glfwSetWindowMonitor(window, monitor, xpos, ypos, width, height, GLFW_DONT_CARE);
+    // Adapter la caméra pour centrer la vue sur la fenêtre
+    camera.setPosition(width / 2.0f, height / 2.0f);
+}
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     double xpos, ypos;
@@ -86,6 +101,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
         running = !running;
     }
+    if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
+        toggle_fullscreen(window);
+    }
 }
 
 int main() {
@@ -94,7 +112,7 @@ int main() {
         return -1;
     }
 
-    GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Jeu de la vie", nullptr, nullptr);
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Jeu de la vie", nullptr, nullptr);
     if (!window) {
         std::cerr << "Échec de la création de la fenêtre GLFW" << std::endl;
         glfwTerminate();

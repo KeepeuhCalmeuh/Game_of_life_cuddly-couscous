@@ -7,6 +7,12 @@ Renderer::Renderer(int windowWidth, int windowHeight, int cellSize)
     : windowWidth(windowWidth), windowHeight(windowHeight), cellSize(cellSize) {}
 
 void Renderer::draw(const GameOfLife& game, const Camera& camera) {
+    // Récupère la taille actuelle de la fenêtre
+    int winW, winH;
+    glfwGetFramebufferSize(glfwGetCurrentContext(), &winW, &winH);
+    windowWidth = winW;
+    windowHeight = winH;
+
     float zoom = camera.getZoom();
     float offsetX = camera.getX();
     float offsetY = camera.getY();
